@@ -3,6 +3,7 @@ package com.example.outsidein.unittests
 import com.example.outsidein.Engine
 import com.example.outsidein.utils.MainCoroutineScopeRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -26,10 +27,11 @@ class EngineShould {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun riseTheTemperatureWhenItTurnsOn() = runTest {
-        engine.turnOn()
+    fun riseTheTemperatureGradulallyWhenItTurnsOn() = runTest {
+        val flow = engine.turnOn()
+        val actual = flow.toList()
 
-        assertEquals(95, engine.temperature)
+        assertEquals(listOf(25, 50, 95), actual)
     }
 
 }
